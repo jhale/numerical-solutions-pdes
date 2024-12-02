@@ -1,11 +1,18 @@
 \documentclass{article}
+\usepackage[backend=biber,style=alphabetic]{biblatex}
+\addbibresource{ref.bib}
+
+\usepackage{fontspec}
+\setsansfont{Latin Modern Sans}
+\renewcommand{\familydefault}{\sfdefault}
+
 \usepackage{graphicx} % Required for inserting images
 \usepackage{blindtext}
 \usepackage{hyperref}
 
-\title{Numerical Solutions of PDEs and applications}
-\author{Jack Hale and Franck Sueur}
-\date{Summer semester 2025}
+\title{Numerical Solutions of PDEs and Applications}
+\author{Jack S. Hale and Franck Sueur}
+\date{Summer Semester 2025}
 
 \begin{document}
 
@@ -13,16 +20,32 @@
 
 \section{Introduction}
 
-This course is an introduction to the research of numerical solutions of some
-PDEs. It contains a theoretical part setting the mathematical foundations
-necessary for some important numerical methods used to obtain solutions to some
-classical PDEs, in particular the finite element method and the finite
-difference method. We mainly follow the reference \cite{Q} which is available
-on the university's website:  \url{http://www.a-z.lu} as well as on some less
-official website, even in a more recent version ! In particular, we cover the
-contents of chapters 1, 2, 3, 4 and 13.
+This course is an introduction to the numerical solution of partial
+differential equations (PDEs). It contains a theoretical part setting the
+mathematical foundations necessary for some important numerical methods used to
+obtain solutions to some classical PDEs, in particular the finite element
+method and the finite difference method. The theoretical part of the course is
+supported by the development of a one-dimensional Galerkin finite element code
+for the Poisson problem and a one-dimensional finite difference code for a
+scalar hyperbolic transport problem.
 
-\section{A brief survey of partial differential equations}
+We largely follow the reference \cite{Q} which is available via the
+\href{https://a-z.lu}{National Library's Website} as well as on some less
+official website. In particular, we cover the contents of \cite[Chapters 1, 2,
+3, 4, and 14]{Q}.
+
+\section{Organisation}
+
+\subsection{Teaching}
+
+For \emph{practical session} must bring a laptop with Python version 3.10 or
+later installed (recommended), or with access to Google Colaboratory.
+
+\subsection{Assessment}
+
+\section{Syllabus}
+
+\subsection{A brief survey of partial differential equations}
 
 This chapter briefly introduces the notion of linear PDEs and their
 classification into elliptic, parabolic and hyperbolic  equations. We mention
@@ -30,7 +53,7 @@ some classical examples, mainly issued from physics and engineering, such as
 the transport equation, the Laplace equation, the heat equation and the wave
 equation. 
 
-\section{Elements of functional analysis} 
+\subsection{Elements of functional analysis} 
 
 We introduce the main notions and theoretical results of functional analysis
 that are extensively used throughout the course. We consider the Riesz
@@ -41,7 +64,7 @@ sense of Fréchet, some elements of the theory of distributions, the basic
 properties of the Lebesgue and Sobolev spaces, and the notion of adjoint
 operator. 
 
-\section{Elliptic equations}
+\subsection{Elliptic equations}
 
 We illustrate boundary-value problems for elliptic equations (in one and
 several dimensions), present their variational reformulations, treat the
@@ -55,7 +78,7 @@ weak formulation is equivalent to the strong one. For general elliptic
 problems, the Lax-Milgram theorem  ensures that the weak formulation is
 well-posed. 
 
-\section{The Galerkin finite element method for elliptic problems}
+\subsection{The Galerkin finite element method for elliptic problems}
 
 We formulate Galerkin’s method for the numerical discretization of elliptic
 boundary-value problems and analyze its existence, uniqueness, stability and
@@ -63,7 +86,9 @@ convergence features  in an abstract functional setting. We then introduce the
 Galerkin finite elements method, first in one dimension,  and then in several
 dimensions.
 
-\section{Finite differences for hyperbolic equations}
+\subsection{Numerical example}
+
+\subsection{Finite differences for hyperbolic equations}
 
 The aim of this final chapter is to address classical finite differences
 methods to  approximate solutions of first-order hyperbolic equations. We
@@ -78,9 +103,9 @@ scalar transport problem, before to move to more general cases, for which we
 analyze the consistency, stability, convergence, dissipation and dispersion
 properties of the finite difference methods 
 
-\section{Coding}
+\subsection{Numerical example}
 
-\bibliography{Ref}
-\bibliographystyle{alpha}
+
+\printbibliography
 
 \end{document}
