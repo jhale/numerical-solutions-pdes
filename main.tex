@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{blindtext}
+\usepackage{hyperref}
+
+\title{Numerical Solutions of PDEs and applications}
+\author{Jack Hale and Franck Sueur}
+\date{Summer semester 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+This course is an introduction to the research of numerical solutions of some PDEs. 
+It contains a theoretical part setting the mathematical foundations necessary for some important numerical methods used to obtain solutions to some classical PDEs, in particular the finite element method and the finite difference
+method.
+We mainly follow the reference \cite{Q} which is available on the university's website:  \url{http://www.a-z.lu} as well as on some less official website, even in a more recent version ! 
+ In particular, we cover the contents of chapters 1, 2, 3, 4 and 13.
+
+
+
+
+
+ \section{A brief survey of partial differential equations}
+
+This chapter briefly introduces the notion of linear PDEs and their classification into elliptic, parabolic and hyperbolic  equations. We mention some classical examples, mainly issued from physics and engineering, such as the transport equation, the Laplace equation, the heat equation and the wave equation. 
+
+\section{Elements of functional analysis} 
+
+We introduce the main notions and theoretical results of functional analysis that are extensively used throughout the course. We consider the Riesz theorem regarding representation of continuous linear forms on a Hilbert space, and we survey the notions of bilinear form, of continuous injection of a Hilbert space into another, the notion of derivative in the sense of Fréchet, some elements of the theory of distributions, the basic properties of the Lebesgue and  Sobolev spaces, and the notion of adjoint operator. 
+
+\section{Elliptic equations}
+
+We illustrate boundary-value problems for elliptic equations (in one
+and several dimensions), present their variational reformulations, treat the boundary conditions and analyze their well-posedness. Several examples of physical interest are
+introduced, in particular the Poisson equation, starting with the one-dimensional case, for various boundary conditions. We consider some variational formulations of these problems, and then turn to the boundary-value problems associated to the Poisson
+equation in the two-dimensional case. We establish that under some regularity condition the weak formulation is equivalent to the strong one. 
+For general elliptic problems, the Lax-Milgram theorem  ensures that the weak formulation is well-posed. 
+
+\section{The Galerkin finite element method for elliptic problems}
+
+ We formulate Galerkin’s method
+for the numerical discretization of elliptic boundary-value problems and analyze its existence, uniqueness, stability and convergence features  in
+an abstract functional setting. We then introduce the Galerkin finite elements method, first in one
+dimension,  and then in several dimensions.
+
+\section{Finite differences for hyperbolic equations}
+
+ The aim of this final chapter is to address classical finite differences  methods to  approximate solutions of first-order hyperbolic equations. 
+We start with exposing some hyperbolic equations starting with the 
+scalar transport problem in one dimension which we analyze by the method of characteristics. We also establish an a priori estimate by the energy method. We then turn to systems of linear hyperbolic equations in one dimension and give the example of  the wave equation. 
+Then we introduce the finite difference method, together with its variants: the forward/centered Euler scheme, the Lax-Friedrichs scheme, the Lax-Wendroff scheme, in the case of the scalar transport problem, before to move to more general cases, for which we analyze the consistency, stability, convergence, dissipation and dispersion
+properties  of the finite difference methods 
+
+\section{Coding}
+
+JH: "So I will prepare the one dimensional reaction-diffusion and then Poisson solver implementation exercises following the notation in Chapter 3 and Chapter 4. Essentially what I will do is provide a skeleton code and then the students will implement the data structures and algorithms piece-by-piece."
+
+   % \addcontentsline{toc}{section}{References}
+    \bibliography{Ref}
+    \bibliographystyle{alpha}
+
+
+\end{document}
