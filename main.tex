@@ -8,15 +8,17 @@
 
 \usepackage{graphicx} % Required for inserting images
 \usepackage{blindtext}
-\usepackage{hyperref}
+\usepackage[hidelinks=true]{hyperref}
+\usepackage[scale=0.5]{draftwatermark}
 
 \title{Numerical Solutions of PDEs and Applications}
 \author{Jack S. Hale and Franck Sueur}
-\date{Summer Semester 2025}
+\date{Summer Semester 2024/2025}
 
 \begin{document}
 
 \maketitle
+\tableofcontents
 
 \section{Introduction}
 
@@ -31,17 +33,8 @@ scalar hyperbolic transport problem.
 
 We largely follow the reference \cite{Q} which is available via the
 \href{https://a-z.lu}{National Library's Website} as well as on some less
-official website. In particular, we cover the contents of \cite[Chapters 1, 2,
+official websites. In particular, we cover the contents of \cite[Chapters 1, 2,
 3, 4, and 14]{Q}.
-
-\section{Organisation}
-
-\subsection{Teaching}
-
-For \emph{practical session} must bring a laptop with Python version 3.10 or
-later installed (recommended), or with access to Google Colaboratory.
-
-\subsection{Assessment}
 
 \section{Syllabus}
 
@@ -56,13 +49,13 @@ equation.
 \subsection{Elements of functional analysis} 
 
 We introduce the main notions and theoretical results of functional analysis
-that are extensively used throughout the course. We consider the Riesz
-representation theorem regarding representation of continuous linear forms on a
-Hilbert space, and we survey the notions of bilinear form, of continuous
-injection of a Hilbert space into another, the notion of derivative in the
-sense of Fréchet, some elements of the theory of distributions, the basic
-properties of the Lebesgue and Sobolev spaces, and the notion of adjoint
-operator. 
+that are extensively used in the numerical analysis of partial differential
+equations. We consider the Riesz representation theorem regarding
+representation of continuous linear forms on a Hilbert space, and we survey the
+notions of bilinear form, of continuous injection of a Hilbert space into
+another, the notion of derivative in the sense of Fréchet, some elements of the
+theory of distributions, the basic properties of the Lebesgue and Sobolev
+spaces, and the notion of adjoint operator. 
 
 \subsection{Elliptic equations}
 
@@ -75,7 +68,7 @@ some variational formulations of these problems, and then turn to the
 boundary-value problems associated to the Poisson equation in the
 two-dimensional case. We establish that under some regularity condition the
 weak formulation is equivalent to the strong one. For general elliptic
-problems, the Lax-Milgram theorem  ensures that the weak formulation is
+problems, the Lax-Milgram theorem ensures that the weak formulation is
 well-posed. 
 
 \subsection{The Galerkin finite element method for elliptic problems}
@@ -83,15 +76,21 @@ well-posed.
 We formulate Galerkin’s method for the numerical discretization of elliptic
 boundary-value problems and analyze its existence, uniqueness, stability and
 convergence features  in an abstract functional setting. We then introduce the
-Galerkin finite elements method, first in one dimension,  and then in several
+Galerkin finite elements method, first in one dimension, and then in several
 dimensions.
 
-\subsection{Numerical example}
+\subsection{The Galerkin finite element method -- a numerical example}
+
+This section introduces students to the development of a one-dimensional
+Galerkin finite element solver for the Poisson problem using Python. We focus
+on building the solver within a provided Jupyter notebook, providing hands-on
+experience with the computational and algorithmic aspects of the finite element
+method.
 
 \subsection{Finite differences for hyperbolic equations}
 
-The aim of this final chapter is to address classical finite differences
-methods to  approximate solutions of first-order hyperbolic equations. We
+The aim of this final chapter is to study classical finite differences
+methods for approximating solutions of first-order hyperbolic equations. We
 start with exposing some hyperbolic equations starting with the scalar
 transport problem in one dimension which we analyze by the method of
 characteristics. We also establish an a priori estimate by the energy method.
@@ -103,8 +102,66 @@ scalar transport problem, before to move to more general cases, for which we
 analyze the consistency, stability, convergence, dissipation and dispersion
 properties of the finite difference methods 
 
-\subsection{Numerical example}
+\subsection{Finite differences -- a numerical example}
 
+This section introduces students to the development of a one-dimensional finite
+difference solver for a hyperbolic transport problem using Python. We focus on
+building the solver within a provided Jupyter notebook, providing hands-on
+experience with the computational and algorithmic aspects of the finite
+difference method.
+
+\section{Practical matters}
+
+\subsection{Assumed knowledge}
+
+It is assumed that students have taken \emph{Functional Analysis} and
+\emph{Numerical Analysis} courses in MAMATH, or have equivalent knowledge.
+
+\subsection{Dropping the course}
+
+Students cannot drop this course after the two week trial period at the start
+of the semester.
+
+\subsection{Teaching}
+
+For \emph{practical session} must bring a laptop with Python version 3.10 or
+later installed (recommended), or with access to
+\href{https://colab.research.google.com}{Google Colaboratory}.
+
+\subsection{Assessment}
+
+Assessment is via coursework (30\%) and final examination (70\%). The due date
+for the coursework will be set at a later time.
+
+\subsection{Attendance policy}
+
+Attendance at the \emph{lectures} is strongly advised.
+
+Attendance at the \emph{practical sessions} is mandatory as they relate to the
+coursework - one absence will be excused. Further absences must be supported by
+documentation according to the study regulations and a meeting with the study
+programme director and/or instructors.
+
+\subsection{Retake policy}
+
+Failure on the coursework can be compensated through the examination, and vice
+versa, as long as the final mark for the course is greater than or equal to 10.
+
+In the event that the final mark is less than 10:
+
+\begin{itemize}
+\item The student may request a retake the examination once.
+\item The student may not resubmit the coursework.
+\end{itemize}
+
+If the final mark remains less than 10 the student has failed, and can take the
+entire course again in the next semester that it is offered.
+
+\subsection{Communication}
+
+Electronic communication to students as a group will be via the University's
+Moodle. Private communications from students to the instructors must be made
+via the University email.
 
 \printbibliography
 
