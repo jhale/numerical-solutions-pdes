@@ -43,6 +43,8 @@
 #
 # 1. Linear or non-linear, and why?
 # 2. For $k^2 > 0$, elliptic, parabolic or hyperbolic?
+# 3. Neumann or Dirichlet problem?
+# 4. Homogeneous or non-homogeneous boundary conditions?
 #
 # %% [markdown]
 # *Answer*
@@ -58,10 +60,20 @@
 # $u_{\mathrm{exact}}$ that satisfies the Dirichlet boundary conditions, then
 # derive $f$ via substitution into the strong form of the PDE. On a sequence of
 # finer and finer meshes, we will solve our PDE and check that our numerical
-# solution converges at the correct rate. If it does, then it is likely we have
-# a correct implementation.
+# solution converges to $u_{\mathrm{exact}}$ at the correct rate. If it does,
+# then it is likely we have a correct implementation.
 #
-# Let $u_{\mathrm{exact}} = \sin(cx)$ with $c$ an unknown constant.
+# Let $u_{\mathrm{exact}} = \sin(cx)$ with $c$ an unknown positive constant.
+# Find the values for $c$ such that the Dirichlet boundary conditions are
+# satisfied.
+#
+# %% [markdown]
+# *Answer*
+#
+# Write your answer using Markdown here.
+#
+# Find $f$ such that the strong form of the PDE is satisfied with
+# $u_{\mathrm{exact}} = \sin(cx)$.
 #
 # %% [markdown]
 # *Answer*
