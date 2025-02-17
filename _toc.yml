@@ -5,5 +5,3 @@ format: jb-book
 root: README
 chapters:
   - file: chapters/part1
-  - file: chapters/part2
-  - file: chapters/part3

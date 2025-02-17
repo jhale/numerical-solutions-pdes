@@ -1,10 +1,9 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Accelerating Python
-author: Jack S. Hale
-logo: mathcoda.png
-exclude_patterns: ["_build", "accelerating-python-venv"]
+title: Numerical Solutions of PDEs and Applications
+author: Jack S. Hale, Franck Sueur
+exclude_patterns: ["_build", ""]
 copyright: "2025"
 
 # Force re-execution of notebooks on each build.
