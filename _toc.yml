@@ -4,4 +4,6 @@
 format: jb-book
 root: README
 chapters:
+  - file: chapters/syllabus
+  - file: chapters/practical
   - file: chapters/part1
