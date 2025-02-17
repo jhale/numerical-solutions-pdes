@@ -1,13 +1,20 @@
 ---
+title: Numerical Solutions of PDEs and Applications
+file_format: mystnb
 author:
-- Jack S. Hale and Franck Sueur
+- Jack S. Hale
+- Franck Sueur
 bibliography:
 - references.bib
 date: Summer Semester 2024/2025
-title: Numerical Solutions of PDEs and Applications
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .md
+      format_name: myst
 ---
 
-# Introduction
+# Numerical Solutions of PDEs and Applications
 
 This course is an introduction to the numerical solution of partial
 differential equations (PDEs). It contains a theoretical part setting
