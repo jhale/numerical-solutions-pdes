@@ -43,7 +43,7 @@
 #
 # 1. Linear or non-linear, and why?
 # 2. For $k^2 > 0$, elliptic, parabolic or hyperbolic?
-# 
+#
 # %% [markdown]
 # *Answer*
 #
