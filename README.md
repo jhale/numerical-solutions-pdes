@@ -9,7 +9,7 @@ date: 2025
 
 # Numerical Solutions of PDEs and Applications
 
-## Introduction
+## Overview
 
 This course is an introduction to the numerical solution of partial
 differential equations (PDEs). It contains a theoretical part setting the
