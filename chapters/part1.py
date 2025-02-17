@@ -20,6 +20,10 @@
 # finite element code for the following reaction-diffusion type partial
 # differential equation.
 #
+# *The notebook is not complete - your task will be to complete the missing
+# parts and submit it as the first part of the coursework.*
+#
+# ## Preliminaries
 #
 # Find $u : [0, 1] \to \mathbb{R}$ such that
 #
@@ -33,32 +37,32 @@
 # u(0) = 0, \quad u(1) = 0.
 # $$
 #
-# *The notebook is not complete - your task will be to complete the missing
-# parts and submit it as the first part of the coursework.*
-#
-# ## Exercise 1
+# ### Exercise 1
 #
 # Comment on the following aspects of this PDE:
 #
 # 1. Linear or non-linear, and why?
 # 2. For $k^2 > 0$, elliptic, parabolic or hyperbolic?
-
+# 
 # %% [markdown]
 # *Answer*
 #
 # Write your answer using Markdown here.
 
 # %% [markdown]
-# ## Exercise 2
+# ### Exercise 2
 #
-# Eventually, we would like to *verify* that our finite element method is
-# working as we would expect (more on this later). One straightforward way to
-# do this is via the method of manufactured solutions - we will invent a
-# solution $u_{\mathrm{exact}}$ that satisfies the Dirichlet boundary
-# conditions, then derive $f$. We will then solve this problem using our
-# finite element code, and check that it converges at the correct rate -
-# this gives us a reasonable guarantee that
-
+# Once we have finished, we would like to *verify* that our finite element code
+# can correctly solve a PDE. One straightforward way to do this is via the
+# method of manufactured solutions. We will invent a solution
+# $u_{\mathrm{exact}}$ that satisfies the Dirichlet boundary conditions, then
+# derive $f$ via substitution into the strong form of the PDE. On a sequence of
+# finer and finer meshes, we will solve our PDE and check that our numerical
+# solution converges at the correct rate. If it does, then it is likely we have
+# a correct implementation.
+#
+# Let $u_{\mathrm{exact}} = \sin(cx)$ with $c$ an unknown constant.
+#
 # %% [markdown]
 # *Answer*
 #
