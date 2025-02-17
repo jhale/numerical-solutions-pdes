@@ -1,0 +1,6 @@
+jax
+matplotlib
+numba
+numpy
+r2pipe
+scipy

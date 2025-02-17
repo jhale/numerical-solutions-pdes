@@ -1,0 +1,42 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Build documentation
+
+on:
+  workflow_call:
+  push:
+    branches:
+      - "!main"
+      - "**"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -r requirements-docs.txt
+          python3 -m pip install -r requirements.txt
+
+      - name: ruff check and format
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Build book
+        run: jupyter book build -W .
+      
+      - name: Upload documentation as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webpage
+          path: _build/html
+          if-no-files-found: error
