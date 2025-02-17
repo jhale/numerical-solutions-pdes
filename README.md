@@ -29,10 +29,12 @@ contents of {cite}`quarteroni` Chapters 1, 2, 3, 4, and 14.
 ```{bibliography}
 ```
 
-```{contents}
-```
-
 ## Instructors
 
-Franck Sueur, Department of Mathematics, University of Luxembourg.
-Jack S. Hale, Department of Engineering, University of Luxembourg.
+- Franck Sueur, Department of Mathematics, University of Luxembourg.
+- Jack S. Hale, Department of Engineering, University of Luxembourg.
+
+## License
+
+Numerical Solutions of PDEs and Applications © 2025 by Jack S. Hale and Franck
+Sueur is licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
