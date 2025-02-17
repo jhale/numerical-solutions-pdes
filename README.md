@@ -2,10 +2,10 @@
 title: Numerical Solutions of PDEs and Applications
 file_format: mystnb
 author:
-- Jack S. Hale
-- Franck Sueur
+  - Jack S. Hale
+  - Franck Sueur
 bibliography:
-- references.bib
+  - references.bib
 date: Summer Semester 2024/2025
 jupyter:
   jupytext:
@@ -17,19 +17,20 @@ jupyter:
 # Numerical Solutions of PDEs and Applications
 
 This course is an introduction to the numerical solution of partial
-differential equations (PDEs). It contains a theoretical part setting
-the mathematical foundations necessary for some important numerical
-methods used to obtain solutions to some classical PDEs, in particular
-the finite element method and the finite difference method. The
-theoretical part of the course is supported by the development of a
-one-dimensional Galerkin finite element code for the Poisson problem and
-a one-dimensional finite difference code for a scalar hyperbolic
-transport problem.
+differential equations (PDEs). It contains a theoretical part setting the
+mathematical foundations necessary for understaning some important numerical
+methods used to obtain solutions to some classical PDEs, in particular the
+finite element method. 
 
-We largely follow the reference [@Q] which is available via the
-[National Library's Website](https://a-z.lu) as well as on some less
-official websites. In particular, we cover the contents of [@Q Chapters
-1, 2, 3, 4, and 14].
+The theoretical part of the course is supported by the development of a
+one-dimensional Galerkin finite element code for the Poisson problem and an
+coursework for developing a one-dimensional discontinuous Galerkin finite
+element code for a scalar hyperbolic transport problem.
+
+We largely follow the reference {cite}`quarteroni` which is available via the
+[National Library's Website](https://a-z.lu) as well as on some less official
+websites. In particular, we cover the contents of {cite}`quateroni` Chapters 1,
+2, 3, 4, and 14].
 
 # Syllabus
 
