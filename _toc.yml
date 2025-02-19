@@ -6,4 +6,5 @@ root: README
 chapters:
   - file: chapters/syllabus
   - file: chapters/practical
+  - file: chapters/setup
   - file: chapters/part1

@@ -13,7 +13,7 @@
 #     name: python3
 # ---
 
-# %% [markdown]
+# %% [markdown] editable=true slideshow={"slide_type": ""}
 # # Preliminaries
 #
 # In this notebook we explore some preliminary points before we begin actually exploring the implementation of the Galerkin finite element method in depth.
