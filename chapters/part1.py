@@ -329,18 +329,22 @@ def u_exact(N: int = 2, c: int = 1, plot_fine=False):
     nodes = np.linspace(0.0, 1.0, num=N)
     # This next statement is precisely the nodal values of the interpolant of u
     Iu = np.sin(c * np.pi * nodes)
+
     for node in nodes:
         plt.axvline(node, color="gray", linestyle="-", alpha=0.6)
-    plt.ylim(-1.1, 1.1)
-    plt.xlim(-0.1, 1.1)
-    plt.xlabel(r"$x$")
-    plt.ylabel(r"$u$")
+
     (line,) = plt.plot(nodes, Iu, "-", label="$I_h u$")
     plt.plot(nodes, Iu, "o", color=line.get_color(), label="$(I_h u)(x_j)$")
     if plot_fine:
         xs = np.linspace(0.0, 1.0, num=500)
         y = np.sin(c * np.pi * xs)
         plt.plot(xs, y, "-", label="$u$")
+
+    plt.ylim(-1.1, 1.1)
+    plt.xlim(-0.1, 1.1)
+    plt.xlabel(r"$x$")
+    plt.ylabel(r"$u$")
+
     plt.legend(loc="lower left")
 
 
