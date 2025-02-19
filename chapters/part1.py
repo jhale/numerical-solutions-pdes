@@ -87,8 +87,6 @@
 #
 # Write your answer using Markdown here.
 
-# %%
-
 # %% [markdown]
 # ### Exercise 3
 #
@@ -135,13 +133,13 @@ plt.plot(x, u_exact)
 # \mathcal{T}_h = \{ K_i = (x_i, x_{i+1}) \; | \; i = 0, 1, \dots, N-1 \},
 # $$
 #
-# with vertices
+# with $N + 1$ vertices
 #
 # $$
 # 0 = x_0 < x_1 < \cdots < x_N = 1,
 # $$
 #
-# and fixed mesh size $h = x_{i+1} - x_i = 1/N$. Note that
+# and fixed mesh size $h = x_{i+1} - x_i = 1/(N - 1)$. Note that
 #
 # $$
 # \bigcup K_i = \Omega.
@@ -200,7 +198,7 @@ plt.plot(x, u_exact)
 #
 # > The $N = 2$ case is similar to the situation when we construct the local finite element basis functions later on in the course, and then pull back the integral from each global cell $K_j = (x_j, x_{j + 1})$ to the local cell $\hat{K} = (0, 1)$.
 #
-# Experiment with increasing $N$. Match up what you see in the plot with the properties discussed in the previous paragraphs.
+# Experiment with increasing $N$. Match up what you see in the plot with the equations and properties discussed in the previous paragraphs.
 
 # %%
 from plot_basis import plot_p1_basis
@@ -219,12 +217,14 @@ interact(plot_p1_basis, N=(2,10))
 #
 # where $u(x_j)$ are the nodal values of $u$.
 #
+# > The nodal values of the $P^1$ space are associated with the vertices of the mesh. In this course we do not pay any particular care to the association between the topological entities of the mesh (e.g. vertices) and the nodes (or degrees of freedom) of the finite element space $V_h$. We also do not strictly separate the topology of the mesh from its geometry. These precisions will be made in the Numerical Methods for Variational Problems course in Semester 3.
+#
 # The interpolation operator has the following properties:
 #
 # 1. Exact (to machine precision) reproduction of linear functions, i.e. if $u$ is linear, then $I_h u = u$ everywhere.  
 # 2. $I_h u$ is $C^0$ on $\Omega$.  
 # 3. The basis is local in a spatial sense - the value of $(I_h u)(x)$ depends only on $u(x_j)$ at the nearest nodes.
-# 4. The construction of $\varphi_j$ ensures that the interpolant $I_h u$ matches $u$ at the nodes, i.e. $(I_h u)(x_j) = u(x_j)$.
+# 4. The construction of $\varphi_j$ ensures that the interpolant $I_h u$ matches $u$ at the vertices, i.e. $(I_h u)(x_j) = u(x_j)$.
 #
 # The interpolant of $u$ can be written in terms of the two local basis functions
 #
@@ -256,7 +256,7 @@ interact(plot_p1_basis, N=(2,10))
 #     | u |_{H^2} = \left( \int_0^1 | u''(x) |^2 dx \right)^{1/2}.
 # $$
 #
-# For the exact solution given above, derive an explicit expression for the interpolation error in terms of the parameters $C$, $h$, and $c$. In words, comment on the dependence between the parameters and the error, and give an intepretation of the result.
+# For the exact solution given above, derive an explicit bound for the interpolation error in terms of the parameters $C$, $h$, and $c$. In words, comment on the dependence between the parameters and the error, and give an intepretation of the result.
 #
 # > The extended version of the previous result, called a finite element error bound, will be covered in the theoretical part of the course. The finite element error bound states that the error between the exact solution and the finite element solution $u_h$ is given by
 # $$
@@ -265,26 +265,42 @@ interact(plot_p1_basis, N=(2,10))
 # > which is of a very similar form to the interpolation error estimate we just saw. Note that $C$ is a different positive constant to the one you have just seen - this applies throughout the course!
 
 # %% [markdown]
+# *Answer*
+#
+# Write your answer using Markdown here.
+
+# %% [markdown]
 # ### Exercise 7
 #
 # Having seen the interpolation error estimate is is helpful to play around with the parameters $c$, controlling how oscillatory our solution $u$ is, and $h = 1/N$ and simply observe how the interpolant $I_h u$ changes.
+#
+# Matplotlib already implements the linear interpolant; you give it an array of values $(I_h u)(x_j)$ of the function $u$ at the nodes $x_j$ and it will plot the linear interpolant $I_h u$.
 #
 # In the box below the plot explain your observations and relate them back to the interpolation error estimate we just saw.
 
 # %%
 from ipywidgets import interact
 
-def u_exact(N: int, c: int):
+def u_exact(N: int = 2, c: int = 1, plot_fine=False):
     nodes = np.linspace(0.0, 1.0, num=N)
     # This next statement is precisely the nodal values of the interpolant of u
     Iu = np.sin(c*np.pi*nodes)
     for node in nodes:
         plt.axvline(node, color='gray', linestyle='-', alpha=0.6)
-    plt.ylim(-1, 1)
+    plt.ylim(-1.1, 1.1)
     plt.xlim(-0.1, 1.1)
-    plt.plot(nodes, Iu, '-o')
+    plt.xlabel(r'$x$')
+    plt.ylabel(r'$u$')
+    line, = plt.plot(nodes, Iu, '-', label="$I_h u$")
+    plt.plot(nodes, Iu, 'o', color=line.get_color(), label="$(I_h u)(x_j)$")
+    if plot_fine:
+        xs = np.linspace(0.0, 1.0, num=500)
+        y = np.sin(c*np.pi*xs)
+        plt.plot(xs, y, "-", label="$u$")
+    plt.legend(loc="lower left")   
 
-interact(u_exact, N=(2, 1000), c=(1, 20))
+
+interact(u_exact, N=(2, 100), c=(1, 20), plot_fine=False)
 
 # %% [markdown]
 # *Answer*

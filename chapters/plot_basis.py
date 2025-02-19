@@ -16,7 +16,7 @@ def p1_basis_function(x, nodes, j):
         phi[right] = (nodes[j + 1] - x[right]) / (nodes[j + 1] - nodes[j])
     return phi
 
-def plot_p1_basis(N):
+def plot_p1_basis(N=2):
     """Plot all P1 basis functions on a mesh with N nodes."""
     resolution = 500
     nodes = generate_mesh(N)
@@ -36,8 +36,8 @@ def plot_p1_basis(N):
         mid_point = (nodes[i] + nodes[i + 1]) / 2
         plt.text(mid_point, -0.1, f"$K_{{{i}}}$", ha='center', va='center', fontsize=10)
 
-    plt.xlabel("$x$", fontsize=12)
-    plt.ylabel("$\\varphi_j(x)$", fontsize=12)
+    plt.xlabel(r"$x$", fontsize=12)
+    plt.ylabel(r"$\\varphi_j(x)$", fontsize=12)
     plt.xticks(nodes)
     plt.grid(True, linestyle="--", alpha=0.7)
     plt.legend(loc="upper right", fontsize=9)

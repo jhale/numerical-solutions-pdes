@@ -24,7 +24,8 @@ element code for a scalar hyperbolic transport problem.
 
 We largely follow the reference {cite}`quarteroni` which is available via the
 [National Library's Website](https://a-z.lu). In particular, we cover the
-contents of {cite}`quarteroni` Chapters 1, 2, 3, 4, 8, and 14.
+contents of {cite}`quarteroni` Chapters 1, 2, 3, 4 and 14. We do not recommend
+Chapter 8 covering the computer implementation of the finite element method.
 
 ```{bibliography}
 ```
