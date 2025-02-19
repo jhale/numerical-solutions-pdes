@@ -5,6 +5,7 @@ title: Numerical Solutions of PDEs and Applications
 author: Jack S. Hale, Franck Sueur
 exclude_patterns: ["_build", "plot_basis.py"]
 copyright: "2025"
+only_build_toc_files: true
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
