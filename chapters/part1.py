@@ -100,7 +100,7 @@ n = 1
 c = np.pi
 
 x = np.linspace(0.0, 1.0, num=100)
-u_exact = np.sin(n*c*x)
+u_exact = np.sin(n * c * x)
 
 plt.plot(x, u_exact)
 
@@ -160,7 +160,7 @@ plt.plot(x, u_exact)
 # On $ K_i = (x_i, x_{i+1})$ the global piecewise definition
 #
 # $$
-# \varphi_i(x) = 
+# \varphi_i(x) =
 # \begin{cases}
 # \dfrac{x_{i+1} - x}{x_{i+1} - x_i}, & x \in [x_i, x_{i+1}], \\[10pt]
 # 0, & \text{otherwise,}
@@ -204,7 +204,7 @@ plt.plot(x, u_exact)
 from plot_basis import plot_p1_basis
 from ipywidgets import interact
 
-interact(plot_p1_basis, N=(2,10))
+interact(plot_p1_basis, N=(2, 10))
 
 # %% [markdown]
 # ### The interpolation operator $I_h$
@@ -221,8 +221,8 @@ interact(plot_p1_basis, N=(2,10))
 #
 # The interpolation operator has the following properties:
 #
-# 1. Exact (to machine precision) reproduction of linear functions, i.e. if $u$ is linear, then $I_h u = u$ everywhere.  
-# 2. $I_h u$ is $C^0$ on $\Omega$.  
+# 1. Exact (to machine precision) reproduction of linear functions, i.e. if $u$ is linear, then $I_h u = u$ everywhere.
+# 2. $I_h u$ is $C^0$ on $\Omega$.
 # 3. The basis is local in a spatial sense - the value of $(I_h u)(x)$ depends only on $u(x_j)$ at the nearest nodes.
 # 4. The construction of $\varphi_j$ ensures that the interpolant $I_h u$ matches $u$ at the vertices, i.e. $(I_h u)(x_j) = u(x_j)$.
 #
@@ -281,23 +281,24 @@ interact(plot_p1_basis, N=(2,10))
 # %%
 from ipywidgets import interact
 
+
 def u_exact(N: int = 2, c: int = 1, plot_fine=False):
     nodes = np.linspace(0.0, 1.0, num=N)
     # This next statement is precisely the nodal values of the interpolant of u
-    Iu = np.sin(c*np.pi*nodes)
+    Iu = np.sin(c * np.pi * nodes)
     for node in nodes:
-        plt.axvline(node, color='gray', linestyle='-', alpha=0.6)
+        plt.axvline(node, color="gray", linestyle="-", alpha=0.6)
     plt.ylim(-1.1, 1.1)
     plt.xlim(-0.1, 1.1)
-    plt.xlabel(r'$x$')
-    plt.ylabel(r'$u$')
-    line, = plt.plot(nodes, Iu, '-', label="$I_h u$")
-    plt.plot(nodes, Iu, 'o', color=line.get_color(), label="$(I_h u)(x_j)$")
+    plt.xlabel(r"$x$")
+    plt.ylabel(r"$u$")
+    (line,) = plt.plot(nodes, Iu, "-", label="$I_h u$")
+    plt.plot(nodes, Iu, "o", color=line.get_color(), label="$(I_h u)(x_j)$")
     if plot_fine:
         xs = np.linspace(0.0, 1.0, num=500)
-        y = np.sin(c*np.pi*xs)
+        y = np.sin(c * np.pi * xs)
         plt.plot(xs, y, "-", label="$u$")
-    plt.legend(loc="lower left")   
+    plt.legend(loc="lower left")
 
 
 interact(u_exact, N=(2, 100), c=(1, 20), plot_fine=False)
