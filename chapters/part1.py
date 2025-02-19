@@ -91,7 +91,7 @@
 # %% [markdown]
 # ### Exercise 3
 #
-# The function below plots the solution $u_{\mathrm{exact}}$. Extend the code to also plot the $f$ you derived previously. Add axis labels and enable a legend for the graph.
+# Adjust the code below to plot the solution $u_{\mathrm{exact}}$ for a fixed value of $c$ such that the boundary conditions are satisfied. Extend the code to also plot the $f$ you derived previously. Add axis labels and enable a legend for the graph.
 
 # %%
 import numpy as np
@@ -99,11 +99,10 @@ import matplotlib.pyplot as plt
 from plot_basis import plot_p1_basis
 from ipywidgets import interact
 
-n = 1
-c = np.pi
+c = 10.0
 
 x = np.linspace(0.0, 1.0, num=100)
-u_exact = np.sin(n * c * x)
+u_exact = np.sin(c * x)
 
 plt.plot(x, u_exact)
 
@@ -195,7 +194,7 @@ plt.plot(x, u_exact)
 # %% [markdown]
 # ### Visualisation
 #
-# In the next cell we show a plot of the basis functions for increasingly fine meshes. Finer meshes lead to more basis functions.
+# In the next cell we show a plot of the finite element basis functions on an adjustable mesh.
 #
 # Begin by dragging the slider to $N = 2$. The endpoints of the single cell $K_0$ are shown by the grey vertical lines at $x = 0$ and $x = 1$. The coloured circles along the lower axis denote the location of the two *degrees of freedom* $x_j$ associated with the basis functions $\varphi_j$. The two linear basis functions, along with each associated degree of freedom, are plotted in the same colour.
 #
