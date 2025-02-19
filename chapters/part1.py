@@ -31,6 +31,9 @@
 # > The notebook is not complete - your task will be to complete the missing
 # > parts and submit it as the first part of the coursework.
 #
+# > The interactive elements of this notebook only work when the notebook is
+# > executed in a notebook environment.
+#
 # ## The Poisson problem
 #
 # Find $u : \Omega := [0, 1] \to \mathbb{R}$ such that

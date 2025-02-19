@@ -10,3 +10,10 @@ requirements are documented in
 [requirements.txt](https://github.com/jhale/numerical-solutions-pdes/blob/main/requirements.txt)
 and
 [requirements-docs.txt](https://github.com/jhale/numerical-solutions-pdes/blob/main/requirements-docs.txt).
+These can be used e.g.
+
+    conda install --file requirements.txt
+
+or
+
+    pip install -r requirements.txt
