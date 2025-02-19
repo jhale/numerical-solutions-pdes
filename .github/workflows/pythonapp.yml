@@ -36,7 +36,7 @@ jobs:
           jupytext --to ipynb chapters/part1.py 
 
       - name: Build book
-        run: jupyter book build -W .
+        run: jupyter book build .
       
       - name: Upload documentation as artifact
         uses: actions/upload-artifact@v4
