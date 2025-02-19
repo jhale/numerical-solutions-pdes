@@ -31,7 +31,7 @@
 # > The notebook is not complete - your task will be to complete the missing
 # > parts and submit it as the first part of the coursework.
 #
-# ## Preliminaries
+# ## The Poisson problem
 #
 # Find $u : \Omega := [0, 1] \to \mathbb{R}$ such that
 #
@@ -129,7 +129,7 @@ plt.plot(x, u_exact)
 # Write your answer using Markdown here.
 
 # %% [markdown]
-# ## Basic ingredients of the finite element method
+# ## Building finite element basis functions
 #
 # ### The mesh
 #
@@ -281,7 +281,9 @@ interact(plot_p1_basis, N=(2, 10))
 # $$
 # \lVert v \rVert_{H^1} = \lVert v \rVert_{L^2}^2 + \lVert \nabla v \rVert_{L^2}^2,
 # $$
+#
 # and $ | \cdot |_{H^2} $ is the $H^2$-seminorm
+#
 # $$
 #     | u |_{H^2} = \left( \int_0^1 | u''(x) |^2 dx \right)^{1/2}.
 # $$
@@ -295,11 +297,11 @@ interact(plot_p1_basis, N=(2, 10))
 # > bound, will be covered in the theoretical part of the course. The finite
 # > element error bound states that the error between the exact solution and the
 # > linear Lagrange finite element solution $u_h$ is given by
-#
-# $$
-# \lVert u - u_h \rVert_{H^1} \leq C h | u |_{H^2}
-# $$
-#
+# >
+# > $$
+#   \lVert u - u_h \rVert_{H^1} \leq C h | u |_{H^2}
+#   $$
+# >
 # > which is of a very similar form to the interpolation error estimate we just
 # > saw. Note that $C$ is a different positive constant to the one you have just
 # > seen - this applies throughout the course!
