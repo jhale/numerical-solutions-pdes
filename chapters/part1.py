@@ -33,10 +33,10 @@
 #
 # ## Preliminaries
 #
-# Find $u : \Omega := (0, 1) \to \mathbb{R}$ such that
+# Find $u : \Omega := [0, 1] \to \mathbb{R}$ such that
 #
 # $$
-# - \Delta u + k^2 u = f,
+# - \Delta u = f,
 # $$
 #
 # with Dirichlet-type boundary conditions
@@ -49,10 +49,11 @@
 #
 # Comment on the following aspects of this PDE:
 #
-# 1. Linear or non-linear, and why?
-# 2. For $k^2 > 0$, elliptic, parabolic or hyperbolic?
-# 3. Neumann or Dirichlet problem?
-# 4. Homogeneous or non-homogeneous boundary conditions?
+# 1. Boundary value problem or initial value problem?
+# 2. Linear or non-linear, and why?
+# 3. For $k^2 > 0$, elliptic, parabolic or hyperbolic?
+# 4. Neumann or Dirichlet problem?
+# 5. Homogeneous or non-homogeneous boundary conditions?
 #
 # %% [markdown]
 # *Answer*
@@ -95,6 +96,8 @@
 # %%
 import numpy as np
 import matplotlib.pyplot as plt
+from plot_basis import plot_p1_basis
+from ipywidgets import interact
 
 n = 1
 c = np.pi
@@ -201,10 +204,8 @@ plt.plot(x, u_exact)
 # Experiment with increasing $N$. Match up what you see in the plot with the equations and properties discussed in the previous paragraphs.
 
 # %%
-from plot_basis import plot_p1_basis
-from ipywidgets import interact
-
 interact(plot_p1_basis, N=(2, 10))
+
 
 # %% [markdown]
 # ### The interpolation operator $I_h$
@@ -278,10 +279,8 @@ interact(plot_p1_basis, N=(2, 10))
 #
 # In the box below the plot explain your observations and relate them back to the interpolation error estimate we just saw.
 
+
 # %%
-from ipywidgets import interact
-
-
 def u_exact(N: int = 2, c: int = 1, plot_fine=False):
     nodes = np.linspace(0.0, 1.0, num=N)
     # This next statement is precisely the nodal values of the interpolant of u
