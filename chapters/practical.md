@@ -19,8 +19,9 @@ Colaboratory](https://colab.research.google.com).
 
 ## Assessment
 
-Assessment is via coursework (30%) and final examination (70%). The due date
-for the coursework will be set at a later time.
+Assessment is via coursework (30%) and final written examination (70%). The due
+date for the coursework will be set at a later time. The syllabus for the exam
+contains material from the entire course.
 
 ## Attendance policy
 
