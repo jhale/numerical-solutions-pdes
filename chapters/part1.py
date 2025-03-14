@@ -20,7 +20,7 @@
 #
 # In particular we will discuss:
 #
-# - A simple Helmholtz-type PDE in strong form.
+# - A simple Poisson PDE in strong form.
 # - An analytical solution.
 # - The conversion from the strong form to the weak form, suitable for finite element analysis.
 # - The construction of a mesh on a simple domain.
@@ -113,7 +113,7 @@ u_exact = np.sin(c * x)
 plt.plot(x, u_exact)
 
 # %% [markdown]
-# ### Exercise 5
+# ### Exercise 4
 #
 # Derive the weak formulation of the partial differential equation. You will
 # need the following integration by parts result.
@@ -315,7 +315,7 @@ interact(plot_p1_basis, N=(2, 10))
 # $$
 
 # %% [markdown]
-# ### Exercise 6
+# ### Exercise 5
 #
 # The interpolation error estimate states that the error between the exact
 # solution $u_{\mathrm{exact}} := u \in H^2$ and its interpolant $I_h u \in
@@ -361,7 +361,7 @@ interact(plot_p1_basis, N=(2, 10))
 # Write your answer using Markdown here.
 
 # %% [markdown]
-# ### Exercise 7
+# ### Exercise 6
 #
 # Having seen the interpolation error estimate is is helpful to play around
 # with the parameters $c$, controlling how oscillatory our solution $u$ is, and
