@@ -61,6 +61,8 @@
 # %%
 import numpy as np
 import numpy.typing as npt
+import scipy.sparse
+import matplotlib.pyplot as plt
 from typing import NamedTuple, Callable
 
 
@@ -95,7 +97,7 @@ def cell_stiffness(a: float, b: float) -> npt.NDArray[np.float64]:
 # 0.5 \\
 # 0.75 \\
 # 1.0
-# \end{bmatrix}
+# \end{bmatrix},
 # $$
 #
 # and the topology a two-dimensional numpy array containing
@@ -107,7 +109,7 @@ def cell_stiffness(a: float, b: float) -> npt.NDArray[np.float64]:
 # 1 & 2 \\
 # 2 & 3 \\
 # 3 & 4
-# \end{bmatrix}
+# \end{bmatrix}.
 # $$
 #
 # ### Exercise 3
@@ -147,7 +149,8 @@ def create_unit_interval_mesh(num_cells: int) -> Mesh:
     return Mesh(geometry=geometry, topology=topology)
 
 
-num_cells = 4
+num_cells = 40
+c = 3.0 * np.pi
 mesh = create_unit_interval_mesh(num_cells)
 
 if num_cells == 4:
@@ -197,13 +200,21 @@ print(cell_stiffness(*mesh.geometry[mesh.topology[1]]))
 # or [Firedrake](https://firedrakeproject.org) is organised.
 # ```
 # %%
-dof_map = mesh.topology.copy()
+FunctionSpace = NamedTuple(
+    "FunctionSpace",
+    (
+        ("mesh", Mesh),
+        ("dofmap", npt.NDArray[np.int32]),
+        ("size", npt.NDArray[np.int64]),
+    ),
+)
+fs = FunctionSpace(mesh=mesh, dofmap=mesh.topology.copy(), size=mesh.geometry.shape[0])
 
 # %% [markdown]
 # For example, we can get the global degree of freedom for global cell 1
 # associated with local degree of freedom 0 using
 # %%
-print(dof_map[1, 0])
+print(fs.dofmap[1, 0])
 
 # %% [markdown]
 # ## Assembly of $\mathbf{K}$
@@ -229,18 +240,15 @@ print(dof_map[1, 0])
 #
 # Complete the function `assemble_stiffness`.
 # %%
-import scipy.sparse
 
 
 def assemble_stiffness(
-    mesh: Mesh, dof_map: npt.NDArray[np.int32], cell_stiffness_fn: Callable
+    fs: FunctionSpace, cell_stiffness_fn: Callable
 ) -> scipy.sparse.lil_matrix:
-    num_dofs = mesh.geometry.shape[0]
-
-    K = scipy.sparse.lil_matrix((num_dofs, num_dofs))
+    K = scipy.sparse.lil_matrix((fs.size, fs.size))
 
     # Loop over the cells of the mesh
-    for cell in range(0, num_cells):
+    for cell in range(0, fs.mesh.topology.shape[0]):
         # Remove this pass statement when you begin coding here
         # pass
         # Step 1: Calculate the stiffness matrix on this cell
@@ -248,19 +256,19 @@ def assemble_stiffness(
 
         # Step 2: Extract the local to global degree of freedom mapping for the
         # cell
-        dofs = dof_map[cell]
+        dofs = fs.dofmap[cell]
 
         # Step 3: Scatter to the sparse matrix
-        # Hint: K[np.ix_(dofs, dofs)]
-        K[np.ix_(dofs, dofs)] = K_cell
+        # Hint: K[np.ix_(dofs, dofs)] will select the right elements in K
+        K[np.ix_(dofs, dofs)] += K_cell
 
-    return K.tocsr()
+    return K
 
 
-K = assemble_stiffness(mesh, dof_map, cell_stiffness)
+K = assemble_stiffness(fs, cell_stiffness)
 if num_cells == 4:
+    print(K)
     K_dense = K.todense()
-    print(K_dense)
     assert np.all(np.isclose(K_dense, K_dense.T))
 
 # %% [markdown]
@@ -268,19 +276,19 @@ if num_cells == 4:
 #
 # We will now assemble the load vector $\mathbf{f}$.
 #
-# If we take $f(x) = \sin(x)$ then we cannot straightforwardly calculate the
-# cell local contribution $\mathbf{f}_{K}$ to the load vector $\mathbf{f}$
-# symbolically. A standard approach is to use quadrature, which allows the
+# If we take $f(x)$ as a general function then we cannot usually symbolically
+# calculate the cell local contribution $\mathbf{f}_{K}$ to the load vector
+# $\mathbf{f}$. A standard approach is to use quadrature, which allows the
 # approximation of an integral on the unit interval
 #
 # $$
-# \int_0^1 g(\hat{x}) \approx \sum_{i = 0}^{n - 1} w_i g(\hat{x}^q_i)
+# \int_0^1 g(\hat{x}) \approx \sum_{i = 0}^{n - 1} w_i g(\hat{x}^q_i),
 # $$
 #
 # where the $w_i$ are known as the quadrature weights and the $\hat{x}_i^q$ as
-# quadrature points. We will use a two-point rule $n = 2$ with points
-# $\hat{x}^q = \frac{1}{2} \pm \frac{1}{2\sqrt{3}}$ and weights $w_1 = w_2 =
-# 1$.
+# quadrature points. We will use a two-point rule $n = 2$ on $[0, 1]$ with
+# points $\hat{x}^q = \frac{1}{2} \pm \frac{1}{2\sqrt{3}}$ and weights $w_1 =
+# w_2 = 1/2$.
 #
 # ```{note}
 # In a proper finite element code *both* the element contributions of the
@@ -296,20 +304,198 @@ quadrature_points = np.array(
         (1.0 / 2.0) + (1.0 / (2.0 * np.sqrt(3.0))),
     ]
 )
-quadrature_weights = np.ones(2, dtype=np.float64)
+quadrature_weights = 0.5 * np.ones(2, dtype=np.float64)
 
 # %% [markdown]
 # ### Exercise 6
 #
+# Using the local-to-global approach and a quadrature rule with $n$ points
+# derive the cell local contribution $\mathbf{f}_K$ to the load vector
+# $\mathbf{f}$.
 #
-
 # %% [markdown]
 # Write your answer using Markdown here.
 #
 # *Answer*
+
 
 # %% [markdown]
 # ### Exercise 7
 #
 # Complete the function `cell_load` which returns the load vector for a cell
 # with vertices $a$ and $b$ with $b > a$.
+# %%
+def phi_hat(x_hat: float) -> npt.NDArray[np.float64]:
+    """
+    Calculate the local P1 finite element basis functions.
+
+    Args:
+        x_hat: Position in local element coordinate system.
+
+    Returns:
+        An array containing the evaluation of the local basis functions at
+        x_hat.
+    """
+    return np.array([1.0 - x_hat, x_hat], np.float64)
+
+
+def cell_load(a: float, b: float) -> npt.NDArray[np.float64]:
+    assert b > a
+    f_cell = np.zeros(2, dtype=np.float64)
+    h = b - a
+
+    for point, weight in zip(quadrature_points, quadrature_weights):
+        phi_hat_point = phi_hat(point)
+        f_cell += weight * c**2 * np.sin(c * (a + h * point)) * phi_hat_point * h
+
+    return f_cell
+
+
+# %% [markdown]
+# So for the fourth cell we can assemble the local stiffness matrix
+# contribution
+# %%
+print(cell_load(*mesh.geometry[mesh.topology[1]]))
+
+# %% [markdown]
+# ### Exercise 8
+#
+# Complete the function `assemble_load`.
+# %%
+
+
+def assemble_load(fs: FunctionSpace, cell_load_fn: Callable) -> npt.NDArray[np.float64]:
+    f = np.zeros(fs.size)
+
+    # Loop over the cells of the mesh
+    for cell in range(0, mesh.topology.shape[0]):
+        # Remove this pass statement when you begin coding here
+        # pass
+        # Step 1: Calculate the stiffness matrix on this cell
+        f_cell = cell_load_fn(*mesh.geometry[mesh.topology[cell]])
+
+        # Step 2: Extract the local to global degree of freedom mapping for the
+        # cell
+        dofs = fs.dofmap[cell]
+
+        # Step 3: Scatter to the vector
+        f[dofs] += f_cell
+
+    return f
+
+
+f = assemble_load(fs, cell_load)
+if num_cells == 4:
+    print(f)
+
+# %% [markdown]
+# ## Applying Dirichlet conditions
+#
+# We have assembled the matrix on the space $V_h$, but recall in the
+# specification of the weak form of the problem we used the space
+# $\mathring{V}_h$, that contains only the basis functions associated with the
+# interior degrees of freedom. We can transfer the problem to the space
+# $\mathring{V}_h$ by modifying the linear system in place. For the degrees of
+# freedom associated with vertices on the boundary (here, always $0$ and $N -
+# 1$) we shall modify the stiffness matrix $\mathbf{K}$ by
+#
+# 1. placing $0$ on the corresponding rows,
+# 2. placing $0$ on the corresponding columns,
+# 3. inserting $1$ on the corresponding diagonals,
+#
+# For the force vector $\mathbf{f}$ we place place $0$ on the corresponding
+# rows.
+#
+# %%
+
+
+def apply_boundary_conditions(
+    dofs: npt.NDArray[np.int32], K: scipy.sparse.lil_matrix, f: npt.NDArray[np.float64]
+):
+    """Apply boundary conditions on dofs to the linear system (K, f).
+
+    Note: K and f are modified in-place.
+
+    Args:
+        dofs: the degrees of freedom to apply boundary conditions to.
+        K: the stiffness matrix.
+        f: the force vector.
+    """
+    num_dofs = K.shape[0]
+
+    for dof in dofs:
+        # Zero the row
+        K.rows[dof] = []
+        K.data[dof] = []
+
+        # Loop over all the rows
+        for row in range(num_dofs):
+            # Does this row have an entry on the column associated with dof?
+            if dof in K.rows[row]:
+                idx = K.rows[row].index(dof)
+                K.rows[row].pop(idx)
+                K.data[row].pop(idx)
+
+        K[dof, dof] = 1.0
+        f[dof] = 0.0
+
+
+boundary_dofs = np.array([0, mesh.geometry.shape[0] - 1], dtype=np.int32)
+apply_boundary_conditions(boundary_dofs, K, f)
+
+if num_cells == 4:
+    print(K)
+    print(f)
+
+# %% [markdown]
+# ## Solving
+# We can now solve the system $\mathbf{K} \mathbf{u}_h = \mathbf{f}$ to find
+# the vector of previously unknown coefficients $\mathbf{u}_h$ of the finite
+# element solution $u_h$.
+# %%
+K_csr = K.tocsr()
+u = scipy.sparse.linalg.spsolve(K_csr, f)
+
+plt.plot(mesh.geometry, u, "o-")
+plt.plot(mesh.geometry, np.sin(c * mesh.geometry), "-")
+plt.xlabel(r"$x$")
+plt.ylabel(r"$u$")
+plt.show()
+
+# %% [markdown]
+# ## Further exercises
+#
+# ### Exercise 9
+#
+# Make a new function `cell_stiffness_quadrature` to compute the stiffness
+# matrix using a quadrature approach. Pass this up to your assembler and
+# re-run, making sure you get the same result.
+#
+# %%
+
+# %% [markdown]
+# ### Exercise 10
+#
+# Write a function `solve` which takes the `num_cells` (number of cells) as an
+# argument. Return the solution from the function. Plot a sequence of solutions
+# on increasingly fine meshes.
+#
+# %%
+
+# %% [markdown]
+# ### Exercise 11
+#
+# Modify the `solve` function to additionally return the error between the
+# interpolant of the solution and the solution in the natural norm.
+#
+# $$
+# e_h = \lVert I_h u - u_h \rVert^2_{H^1_0} = (\mathbf{u} - \mathbf{u}_h)^T \mathbf{K} (\mathbf{u} - \mathbf{u}_h)
+# $$
+# 
+# where $\mathbf{u}$ is the vector of coefficients of the interpolant of the
+# exact solution $u$.
+#
+# On a sequence of refined meshes compute the associated error. Plot the error
+# $e_h$ against $h$ on a log-log plot, and calculate the slope. What do you
+# observe?
+# %%
