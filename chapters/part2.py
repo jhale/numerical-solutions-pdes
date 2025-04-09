@@ -18,6 +18,10 @@
 #
 # In this notebook we will develop a one-dimensional finite Galerkin finite
 # element code.
+# 
+# ```{note}
+# This notebook is incomplete and will be completed as an exercise in class.
+# ```
 #
 # ## Basic algorithm
 #
