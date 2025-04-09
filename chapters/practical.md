@@ -8,8 +8,10 @@ knowledge.
 
 ## Dropping the course
 
-Students cannot drop this course after the two week trial period at the start
-of the semester.
+If the course is mandatory, students cannot drop this course after the two week
+trial period at the start of the semester. If the course is optional, dropping
+the course may be possible. Please contract the study programme directory for
+guidance.
 
 ## Teaching
 
