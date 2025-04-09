@@ -23,6 +23,15 @@ Assessment is via coursework (30%) and final written examination (70%). The due
 date for the coursework will be set at a later time. The syllabus for the exam
 contains material from the entire course.
 
+## Coursework submission
+
+The deadline for submission is Wednesday 28th May 2025 end of day. Please
+submit via email to [jack.hale@uni.lu](mailto:jack.hale@uni.lu)  with the
+subject "Numerical Solutions of PDEs and Applications Coursework 2025".
+
+The email should contain an archive file `SURNAME_coursework.zip` file
+containing your completed notebooks.
+
 ## Attendance policy
 
 Attendance at the *lectures* is strongly advised.
