@@ -71,7 +71,15 @@ from typing import NamedTuple, Callable
 
 
 def cell_stiffness(a: float, b: float) -> npt.NDArray[np.float64]:
-    """Calculate the local stiffness matrix for a cell with vertices a and b."""
+    """Calculate the stiffness matrix contribution for a cell with vertices a and b.
+
+    Args:
+        a: Position of first vertex.
+        b: Position of second vertex.
+
+    Return:
+        The stiffness matrix contribution for the cell.
+    """
     assert b > a
     raise NotImplementedError
 
@@ -148,8 +156,8 @@ def create_unit_interval_mesh(num_cells: int) -> Mesh:
     # return Mesh(geometry=geometry, topology=topology)
 
 
-num_cells = 40
-c = 3.0 * np.pi
+num_cells = 4
+c = 1.0 * np.pi
 mesh = create_unit_interval_mesh(num_cells)
 
 if num_cells == 4:
@@ -244,6 +252,7 @@ print(fs.dofmap[1, 0])
 def assemble_stiffness(
     fs: FunctionSpace, cell_stiffness_fn: Callable
 ) -> scipy.sparse.lil_matrix:
+    """Write a documentation string"""
     K = scipy.sparse.lil_matrix((fs.size, fs.size))
 
     # Loop over the cells of the mesh
@@ -318,8 +327,9 @@ quadrature_weights = 0.5 * np.ones(2, dtype=np.float64)
 # %% [markdown]
 # ### Exercise 7
 #
-# Complete the function `cell_load` which returns the load vector for a cell
-# with vertices $a$ and $b$ with $b > a$.
+# Complete the functions `phi_hat` and `cell_load`. The latter returns the load
+# vector for a cell with vertices $a$ and $b$ with $b > a$.
+#
 # %%
 def phi_hat(x_hat: float) -> npt.NDArray[np.float64]:
     """
@@ -329,13 +339,13 @@ def phi_hat(x_hat: float) -> npt.NDArray[np.float64]:
         x_hat: Position in local element coordinate system.
 
     Returns:
-        An array containing the evaluation of the local basis functions at
-        x_hat.
+        An array containing the evaluation of the local basis functions.
     """
     raise NotImplementedError
 
 
 def cell_load(a: float, b: float) -> npt.NDArray[np.float64]:
+    """Write a documentation string"""
     f_cell = np.zeros(2, dtype=np.float64)
 
     for point, weight in zip(quadrature_points, quadrature_weights):
