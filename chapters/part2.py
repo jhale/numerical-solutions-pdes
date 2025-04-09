@@ -69,8 +69,7 @@ from typing import NamedTuple, Callable
 def cell_stiffness(a: float, b: float) -> npt.NDArray[np.float64]:
     """Calculate the local stiffness matrix for a cell with vertices a and b."""
     assert b > a
-    inv_h = 1.0 / (b - a)
-    return inv_h * np.array([[1.0, -1.0], [-1.0, 1.0]])
+    raise NotImplementedError
 
 
 # %% [markdown]
@@ -140,13 +139,9 @@ def create_unit_interval_mesh(num_cells: int) -> Mesh:
     Returns:
         A 1D uniform mesh on the unit interval.
     """
-    geometry = np.linspace(0.0, 1.0, num_cells + 1).reshape(-1, 1)
+    raise NotImplementedError
 
-    left = np.arange(num_cells, dtype=np.int32)
-    right = left + 1
-    topology = np.stack((left, right), axis=1)
-
-    return Mesh(geometry=geometry, topology=topology)
+    # return Mesh(geometry=geometry, topology=topology)
 
 
 num_cells = 40
@@ -250,17 +245,14 @@ def assemble_stiffness(
     # Loop over the cells of the mesh
     for cell in range(0, fs.mesh.topology.shape[0]):
         # Remove this pass statement when you begin coding here
-        # pass
+        pass
         # Step 1: Calculate the stiffness matrix on this cell
-        K_cell = cell_stiffness_fn(*mesh.geometry[mesh.topology[cell]])
 
         # Step 2: Extract the local to global degree of freedom mapping for the
         # cell
-        dofs = fs.dofmap[cell]
 
         # Step 3: Scatter to the sparse matrix
         # Hint: K[np.ix_(dofs, dofs)] will select the right elements in K
-        K[np.ix_(dofs, dofs)] += K_cell
 
     return K
 
@@ -336,17 +328,15 @@ def phi_hat(x_hat: float) -> npt.NDArray[np.float64]:
         An array containing the evaluation of the local basis functions at
         x_hat.
     """
-    return np.array([1.0 - x_hat, x_hat], np.float64)
+    raise NotImplementedError
 
 
 def cell_load(a: float, b: float) -> npt.NDArray[np.float64]:
-    assert b > a
     f_cell = np.zeros(2, dtype=np.float64)
-    h = b - a
 
     for point, weight in zip(quadrature_points, quadrature_weights):
-        phi_hat_point = phi_hat(point)
-        f_cell += weight * c**2 * np.sin(c * (a + h * point)) * phi_hat_point * h
+        # Remove this pass when you begin coding your solution
+        pass
 
     return f_cell
 
@@ -370,16 +360,13 @@ def assemble_load(fs: FunctionSpace, cell_load_fn: Callable) -> npt.NDArray[np.f
     # Loop over the cells of the mesh
     for cell in range(0, mesh.topology.shape[0]):
         # Remove this pass statement when you begin coding here
-        # pass
+        pass
         # Step 1: Calculate the stiffness matrix on this cell
-        f_cell = cell_load_fn(*mesh.geometry[mesh.topology[cell]])
 
         # Step 2: Extract the local to global degree of freedom mapping for the
         # cell
-        dofs = fs.dofmap[cell]
 
         # Step 3: Scatter to the vector
-        f[dofs] += f_cell
 
     return f
 
@@ -491,7 +478,7 @@ plt.show()
 # $$
 # e_h = \lVert I_h u - u_h \rVert^2_{H^1_0} = (\mathbf{u} - \mathbf{u}_h)^T \mathbf{K} (\mathbf{u} - \mathbf{u}_h)
 # $$
-# 
+#
 # where $\mathbf{u}$ is the vector of coefficients of the interpolant of the
 # exact solution $u$.
 #
