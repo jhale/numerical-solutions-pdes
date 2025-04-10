@@ -34,6 +34,7 @@ jobs:
       - name: convert percent py to ipynb
         run: |
           jupytext --to ipynb chapters/part1.py 
+          jupytext --to ipynb chapters/part2.py 
 
       - name: Build book
         run: jupyter book build .
