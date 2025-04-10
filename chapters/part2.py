@@ -30,13 +30,13 @@
 # $\mathbf{K}$ and load vector $\mathbf{f}$
 #
 # $$
-# K_{ij} &:= \sum_{k = 0}^{N - 1} \int_{K_k} \nabla \phi_i \cdot \nabla \phi_j \; \mathrm{d}x, \\
-# f_{j} &:= \sum_{k = 0}^{N - 1} \int_{K_k} f \phi_j \; \mathrm{d}x.
+# K_{ij} &:= \sum_{K \in \mathcal{T}_h} \int_{K} \nabla \phi_i \cdot \nabla \phi_j \; \mathrm{d}x, \\
+# f_{j} &:= \sum_{K \in \mathcal{T}_h} \int_{K} f \phi_j \; \mathrm{d}x.
 # $$
 #
 # Instead of calculating each entry of $K_{ij}$ we discussed that the most
 # straightforward way to *assemble* the stiffness matrix is to:
-# 1. Loop over the global cells $K_k = (x_k, x_{k+1})$ of the mesh $\mathcal{T}_h$.
+# 1. Loop over the global cells $K$ of the mesh $\mathcal{T}_h$.
 # 2. Calculate the cell local contribution $\mathbf{K}_K \in \mathbb{R}^{2
 # \times 2}$.
 # 3. Determine which pair of finite element basis functions are active on the
@@ -48,10 +48,9 @@
 #
 # ### Exercise 1
 #
-# For a general cell $K$ derive an explicit expression for the cell local
-# contribution $\mathbf{K}_K \in \mathbb{R}^{2 \times 2}$ in terms of $h$ to the
-# stiffness matrix $\mathbf{K}$. Use the local-to-global mapping approach shown
-# in class.
+# For a general cell $K$ derive an explicit symbolic expression for the cell
+# local contribution $\mathbf{K}_K \in \mathbb{R}^{2 \times 2}$ in terms of
+# $h$. Use the local-to-global mapping approach shown in class.
 #
 # *Answer*
 #
@@ -185,7 +184,7 @@ print(cell_stiffness(*mesh.geometry[mesh.topology[1]]))
 #
 # ## Degree of freedom map
 #
-# The *degree of freedom map* `dof_map` will be an array contain information
+# The *degree of freedom map* `dofmap` will be an array contain information
 # about the connection between the local basis functions (degrees of freedom)
 # on the local cell and the global basis functions (degrees of freedom). On the
 # first dimension (rows) the index is the mesh cell number. On the second
@@ -199,6 +198,9 @@ print(cell_stiffness(*mesh.geometry[mesh.topology[1]]))
 # This is infact nothing more than the existing `mesh.topology` array! We
 # simply make a copy and continue, but we explicitly use the right array, in
 # the right place.
+#
+# We package up the `mesh`, `dofmap` and also make a record of the `size` of
+# the function space in a new `NamedTuple` object `FunctionSpace`.
 #
 # ```{note}
 # This explicit separation between mesh topology, geometry and solution degrees
@@ -292,8 +294,9 @@ if num_cells == 4:
 #
 # where the $w_i$ are known as the quadrature weights and the $\hat{x}_i^q$ as
 # quadrature points. We will use a two-point rule $n = 2$ on $[0, 1]$ with
-# points $\hat{x}^q = \frac{1}{2} \pm \frac{1}{2\sqrt{3}}$ and weights $w_1 =
-# w_2 = 1/2$.
+# points $\hat{x}^q_0 = \frac{1}{2} - \frac{1}{2\sqrt{3}}$ and $\hat{x}^q_1 =
+# \frac{1}{2} + \frac{1}{2\sqrt{3}}$ associated with weights $w_1 = w_2 =
+# \frac{1}{2}$.
 #
 # ```{note}
 # In a proper finite element code *both* the element contributions of the
@@ -469,8 +472,9 @@ plt.show()
 # ### Exercise 9
 #
 # Make a new function `cell_stiffness_quadrature` to compute the stiffness
-# matrix using a quadrature approach. Pass this up to your assembler and
-# re-run, making sure you get the same result.
+# matrix using a quadrature approach. Comment on the necessary order of the
+# quadrature rule to exactly compute the integrand. Pass this up to your
+# assembler and re-run, making sure you get the same result.
 #
 # %%
 
