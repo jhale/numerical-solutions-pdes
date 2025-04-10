@@ -407,8 +407,7 @@ if num_cells == 4:
 # 2. placing $0$ on the corresponding columns,
 # 3. inserting $1$ on the corresponding diagonals,
 #
-# For the force vector $\mathbf{f}$ we place place $0$ on the corresponding
-# rows.
+# For the force vector $\mathbf{f}$ we place $0$ on the corresponding rows.
 #
 # %%
 
