@@ -82,6 +82,7 @@ def cell_stiffness(a: float, b: float) -> npt.NDArray[np.float64]:
     assert b > a
     raise NotImplementedError
 
+
 stiffness = cell_stiffness(*[0.0, 1.0])
 assert stiffness.shape == (2, 2)
 
