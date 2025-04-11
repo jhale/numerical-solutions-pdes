@@ -165,7 +165,7 @@ if num_cells == 4:
     assert np.all(np.isclose(mesh.topology, [[0, 1], [1, 2], [2, 3], [3, 4]]))
 
 # %% [markdown]
-# For example, for global cell 1 we can get the connected global vertices using
+# For example, for the second cell we can get the connected global vertices using
 # %%
 print(mesh.topology[1])
 
@@ -359,7 +359,7 @@ def cell_load(a: float, b: float) -> npt.NDArray[np.float64]:
 
 
 # %% [markdown]
-# So for the fourth cell we can assemble the local stiffness matrix
+# So for the second cell we can assemble the local stiffness matrix
 # contribution
 # %%
 print(cell_load(*mesh.geometry[mesh.topology[1]]))
