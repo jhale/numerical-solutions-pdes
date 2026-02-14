@@ -27,6 +27,10 @@ We largely follow the reference {cite}`quarteroni` which is available via the
 contents of {cite}`quarteroni` Chapters 1, 2, 3, 4 and 14. We do not recommend
 Chapter 8 covering the computer implementation of the finite element method.
 
+In addition to {cite}`quarteroni` we also recommend
+{cite}`le_dret_partial_2016` as an alternative reference, also available
+from the [National Library's Website](https://a-z.lu).
+
 ```{bibliography}
 ```
 
