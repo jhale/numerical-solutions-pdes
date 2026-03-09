@@ -101,6 +101,8 @@
 # legend for the graph.
 
 # %%
+
+# %pip install -q matplotlib ipywidgets numpy
 import numpy as np
 import matplotlib.pyplot as plt
 from ipywidgets import interact
