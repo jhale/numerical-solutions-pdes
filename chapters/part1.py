@@ -53,9 +53,8 @@
 # Comment on the following aspects of this PDE:
 #
 # 1. Boundary value problem or initial value problem?
-# 2. Linear or non-linear, and why?
-# 3. For $k^2 > 0$, elliptic, parabolic or hyperbolic?
-# 4. Neumann or Dirichlet problem?
+# 2. Linear or non-linear in $u$, and why?
+# 4. Neumann or Dirichlet boundary conditions?
 # 5. Homogeneous or non-homogeneous boundary conditions?
 #
 # %% [markdown]
@@ -103,6 +102,8 @@
 # %%
 
 # %pip install -q matplotlib ipywidgets numpy
+
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from ipywidgets import interact
