@@ -1,8 +1,8 @@
 # Computer setup
 
-The supported platform for executing the course notebooks is [Google
-Colaboratory](https://colab.google.com). I will explain the process for
-executing the notebooks in class.
+The supported platform for executing the course notebooks is
+[JupyterLite](https://jupyter.org/try-jupyter/lab/). I will explain the
+process for executing the notebooks in class.
 
 It should also be possible to setup a local environment using e.g.
 [conda](https://conda.org), but support is provided on a best-effort basis. The
