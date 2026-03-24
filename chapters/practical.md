@@ -15,9 +15,9 @@ guidance.
 
 ## Teaching
 
-For *practical session* must bring a laptop with Python version 3.10 or later
-installed (recommended), or with access to [Google
-Colaboratory](https://colab.research.google.com).
+For the *practical session* you must bring a laptop with access to the
+internet. We will use the online [JupyterLite
+service](https://jupyter.org/try-jupyter/lab/).
 
 ## Assessment
 
