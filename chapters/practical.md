@@ -10,7 +10,7 @@ knowledge.
 
 If the course is mandatory, students cannot drop this course after the two week
 trial period at the start of the semester. If the course is optional, dropping
-the course may be possible. Please contract the study programme directory for
+the course may be possible. Please contract the study programme administrator for
 guidance.
 
 ## Teaching
@@ -25,7 +25,11 @@ Assessment is via coursework (30%) and final written examination (70%). The due
 date for the coursework will be set at a later time. The syllabus for the exam
 contains material from the entire course.
 
-## Coursework submission
+## Coursework
+
+The coursework consists of completing the exercises in the Jupyter notebooks
+[part 1](part1) and [part 2](part2). How to do this will be explained fully in
+class.
 
 The deadline for submission is Wednesday 28th May 2025 end of day. Please
 submit via email to [jack.hale@uni.lu](mailto:jack.hale@uni.lu)  with the
