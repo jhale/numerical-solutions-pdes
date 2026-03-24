@@ -32,7 +32,7 @@ submit via email to [jack.hale@uni.lu](mailto:jack.hale@uni.lu)  with the
 subject "Numerical Solutions of PDEs and Applications Coursework 2025".
 
 The email should contain an archive file `SURNAME_coursework.zip` file
-containing your completed notebooks.
+containing your completed notebooks (`part1.ipynb` and `part2.ipynb`).
 
 ## Attendance policy
 
