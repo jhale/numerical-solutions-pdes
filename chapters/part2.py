@@ -68,7 +68,7 @@ from typing import NamedTuple, Callable
 
 def cell_stiffness(x_k: float, x_kp1: float) -> npt.NDArray[np.float64]:
     """Calculate the local stiffness matrix for a cell with vertices x_k and x_{k + 1}."""
-    pass
+    raise NotImplementedError
 
 # %% [markdown]
 #
@@ -137,7 +137,7 @@ def create_unit_interval_mesh(num_cells: int) -> Mesh:
     Returns:
         A 1D uniform mesh on the unit interval.
     """
-    pass
+    raise NotImplementedError
 
 num_cells = 4
 c = 3.0 * np.pi  # Can be set to n\pi with n \in \mathbb{N}^{+}
@@ -457,7 +457,7 @@ plt.show()
 def cell_stiffness_quadrature(x_k: float, x_kp1: float) -> npt.NDArray[np.float64]:
     """Calculate the local stiffness matrix for a cell with vertices a and b
     using a quadrature rule."""
-    pass
+    raise NotImplementedError
 
 
 A_analytical = assemble_stiffness(fs, cell_stiffness)
@@ -482,7 +482,7 @@ def solve(num_cells: int) -> tuple[Mesh, npt.NDArray[np.float64]]:
     Returns:
         The mesh and the vector of finite element solution coefficients.
     """
-    pass
+    raise NotImplementedError
 
 for n in [4, 8, 16, 32, 64]:
     mesh_n, u_n = solve(n)
@@ -537,7 +537,7 @@ def solve_with_error(
     the exact solution u and the finite element solution u_h, computed by
     cell-wise quadrature of int (u' - u_h')^2 dx using the reference basis
     derivatives."""
-    pass
+    raise NotImplementedError
 
 num_cells_list = [16, 32, 64, 128, 256, 512]
 hs = np.array([1.0 / n for n in num_cells_list])
