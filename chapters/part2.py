@@ -44,7 +44,7 @@
 #
 # ### Exercise 1
 #
-# For a general cell $K$ derive an explicit expression for the cell local
+# For a general cell $K_k$ derive an explicit expression for the cell local
 # contribution $\mathbf{A}^{(k)} \in \mathbb{R}^{2 \times 2}$ in terms of $h$ to the
 # stiffness matrix $\mathbf{A}$. Use the local-to-global mapping approach shown
 # in class.
@@ -56,7 +56,7 @@
 # ### Exercise 2
 #
 # Complete the function `cell_stiffness` which returns the stiffness matrix for
-# a cell with vertices $x_k$ and $x_{k+1}$ with $x_k > x_{k + 1}$.
+# a cell with vertices $x_k$ and $x_{k+1}$ with $x_{k + 1} > x_{k}$.
 #
 # %%
 import numpy as np
