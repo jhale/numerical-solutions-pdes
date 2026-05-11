@@ -26,8 +26,8 @@
 # $\mathbf{A}$ and load vector $\mathbf{f}$
 #
 # $$
-# A_{ij}^{(k)} &:= \sum_{k = 0}^{N - 1} \int_{K_k}} \nabla \phi_i \cdot \nabla \phi_j \; \mathrm{d}x, \\
-# f_{j}^{(k)} &:= \sum_{k = 0}^{N - 1} \int_{K_k}} f \phi_j \; \mathrm{d}x.
+# A_{ij}^{(k)} &:= \sum_{k = 0}^{N - 1} \int_{K_k} \nabla \phi_i \cdot \nabla \phi_j \; \mathrm{d}x, \\
+# f_{j}^{(k)} &:= \sum_{k = 0}^{N - 1} \int_{K_k} f \phi_j \; \mathrm{d}x.
 # $$
 #
 # Instead of calculating each entry of $A_{ij}$ we discussed that the most
