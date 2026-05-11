@@ -31,7 +31,7 @@ The coursework consists of completing the exercises in the Jupyter notebooks
 [part 1](part1) and [part 2](part2). How to do this will be explained fully in
 class.
 
-The deadline for submission is Wednesday 28th May 2025 end of day. Please
+The deadline for submission is Friday 5th June 2026 end of day. Please
 submit via email to [jack.hale@uni.lu](mailto:jack.hale@uni.lu)  with the
 subject "Numerical Solutions of PDEs and Applications Coursework 2025".
 
