@@ -329,6 +329,8 @@ def phi_hat(x_hat: float) -> npt.NDArray[np.float64]:
 def cell_load(x_k: float, x_kp1: float) -> npt.NDArray[np.float64]:
     """Calculate the local load vector for a cell with vertices a and b
     using a quadrature rule."""
+    f_cell = np.zeros(2, np.float64)
+
     for point, weight in zip(quadrature_points, quadrature_weights):
         pass
 
