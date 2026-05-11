@@ -19,38 +19,35 @@
 # In this notebook we will develop a one-dimensional finite Galerkin finite
 # element code.
 #
-# ```{note}
-# This notebook is incomplete and will be completed as an exercise in class.
-# ```
-#
 # ## Basic algorithm
 #
 # Recall that using the notions in {doc}`part1` and during class we derived the
 # following expressions for the entries of the finite element stiffness matrix
-# $\mathbf{K}$ and load vector $\mathbf{f}$
+# $\mathbf{A}$ and load vector $\mathbf{f}$
 #
 # $$
-# K_{ij} &:= \sum_{K \in \mathcal{T}_h} \int_{K} \nabla \phi_i \cdot \nabla \phi_j \; \mathrm{d}x, \\
-# f_{j} &:= \sum_{K \in \mathcal{T}_h} \int_{K} f \phi_j \; \mathrm{d}x.
+# A_{ij}^{(k)} &:= \sum_{k = 0}^{N - 1} \int_{K_{(k)}} \nabla \phi_i \cdot \nabla \phi_j \; \mathrm{d}x, \\
+# f_{j}^{(k)} &:= \sum_{k = 0}^{N - 1} \int_{K_{(k)}} f \phi_j \; \mathrm{d}x.
 # $$
 #
-# Instead of calculating each entry of $K_{ij}$ we discussed that the most
+# Instead of calculating each entry of $A_{ij}$ we discussed that the most
 # straightforward way to *assemble* the stiffness matrix is to:
-# 1. Loop over the global cells $K$ of the mesh $\mathcal{T}_h$.
-# 2. Calculate the cell local contribution $\mathbf{K}_K \in \mathbb{R}^{2
+# 1. Loop over the global cells $K_k = [x_k, x_{k+1}]$ of the mesh $\mathcal{T}_h$.
+# 2. Calculate the cell local contribution $\mathbf{A}^{(k)} \in \mathbb{R}^{2
 # \times 2}$.
 # 3. Determine which pair of finite element basis functions are active on the
 #    cell.
-# 4. *Assemble* (add) the cell local contribution to the stiffness matrix at
-#    the location of the active basis functions.
+# 4. *Assemble* (add/accumulate) the cell local contribution to the stiffness matrix at
+#    the location of the active global basis functions.
 #
 # The load vector assembly follows similarly.
 #
 # ### Exercise 1
 #
-# For a general cell $K$ derive an explicit symbolic expression for the cell
-# local contribution $\mathbf{K}_K \in \mathbb{R}^{2 \times 2}$ in terms of
-# $h$. Use the local-to-global mapping approach shown in class.
+# For a general cell $K$ derive an explicit expression for the cell local
+# contribution $\mathbf{A}^{(k)} \in \mathbb{R}^{2 \times 2}$ in terms of $h$ to the
+# stiffness matrix $\mathbf{A}$. Use the local-to-global mapping approach shown
+# in class.
 #
 # *Answer*
 #
@@ -59,7 +56,7 @@
 # ### Exercise 2
 #
 # Complete the function `cell_stiffness` which returns the stiffness matrix for
-# a cell with vertices $a$ and $b$ with $b > a$.
+# a cell with vertices $x_k$ and $x_{k+1}$ with $x_k > x_{k + 1}$.
 #
 # %%
 import numpy as np
@@ -69,22 +66,9 @@ import matplotlib.pyplot as plt
 from typing import NamedTuple, Callable
 
 
-def cell_stiffness(a: float, b: float) -> npt.NDArray[np.float64]:
-    """Calculate the stiffness matrix contribution for a cell with vertices a and b.
-
-    Args:
-        a: Position of first vertex.
-        b: Position of second vertex.
-
-    Return:
-        The stiffness matrix contribution for the cell.
-    """
-    assert b > a
-    raise NotImplementedError
-
-
-stiffness = cell_stiffness(*[0.0, 1.0])
-assert stiffness.shape == (2, 2)
+def cell_stiffness(x_k: float, x_kp1: float) -> npt.NDArray[np.float64]:
+    """Calculate the local stiffness matrix for a cell with vertices x_k and x_{k + 1}."""
+    pass
 
 # %% [markdown]
 #
@@ -153,13 +137,10 @@ def create_unit_interval_mesh(num_cells: int) -> Mesh:
     Returns:
         A 1D uniform mesh on the unit interval.
     """
-    raise NotImplementedError
-
-    # return Mesh(geometry=geometry, topology=topology)
-
+    pass
 
 num_cells = 4
-c = 1.0 * np.pi
+c = 3.0 * np.pi  # Can be set to n\pi with n \in \mathbb{N}^{+}
 mesh = create_unit_interval_mesh(num_cells)
 
 if num_cells == 4:
@@ -168,7 +149,7 @@ if num_cells == 4:
     assert np.all(np.isclose(mesh.topology, [[0, 1], [1, 2], [2, 3], [3, 4]]))
 
 # %% [markdown]
-# For example, for the second cell we can get the connected global vertices using
+# For example, for global cell 1 we can get the connected global vertices using
 # %%
 print(mesh.topology[1])
 
@@ -187,7 +168,7 @@ print(cell_stiffness(*mesh.geometry[mesh.topology[1]]))
 #
 # ## Degree of freedom map
 #
-# The *degree of freedom map* `dofmap` will be an array contain information
+# The *degree of freedom map* `dof_map` will be an array contain information
 # about the connection between the local basis functions (degrees of freedom)
 # on the local cell and the global basis functions (degrees of freedom). On the
 # first dimension (rows) the index is the mesh cell number. On the second
@@ -202,9 +183,6 @@ print(cell_stiffness(*mesh.geometry[mesh.topology[1]]))
 # simply make a copy and continue, but we explicitly use the right array, in
 # the right place.
 #
-# We package up the `mesh`, `dofmap` and also make a record of the `size` of
-# the function space in a new `NamedTuple` object `FunctionSpace`.
-#
 # ```{note}
 # This explicit separation between mesh topology, geometry and solution degrees
 # of freedom is not necessary for this simple problem, but does mimic closer
@@ -217,7 +195,7 @@ FunctionSpace = NamedTuple(
     (
         ("mesh", Mesh),
         ("dofmap", npt.NDArray[np.int32]),
-        ("size", npt.NDArray[np.int64]),
+        ("size", int),
     ),
 )
 fs = FunctionSpace(mesh=mesh, dofmap=mesh.topology.copy(), size=mesh.geometry.shape[0])
@@ -229,10 +207,10 @@ fs = FunctionSpace(mesh=mesh, dofmap=mesh.topology.copy(), size=mesh.geometry.sh
 print(fs.dofmap[1, 0])
 
 # %% [markdown]
-# ## Assembly of $\mathbf{K}$
+# ## Assembly of $\mathbf{A}$
 #
-# We now have everything we need to assemble $\mathbf{K}$. Because of the local
-# construction of the basis functions $\mathbf{K}$ will be sparse, i.e. the
+# We now have everything we need to assemble $\mathbf{A}$. Because of the local
+# construction of the basis functions $\mathbf{A}$ will be sparse, i.e. the
 # majority of its entries will be zero.
 #
 # The package `scipy.sparse` contains various efficient sparse data structures.
@@ -257,29 +235,27 @@ print(fs.dofmap[1, 0])
 def assemble_stiffness(
     fs: FunctionSpace, cell_stiffness_fn: Callable
 ) -> scipy.sparse.lil_matrix:
-    """Write a documentation string"""
-    K = scipy.sparse.lil_matrix((fs.size, fs.size))
+    A = scipy.sparse.lil_matrix((fs.size, fs.size))
 
     # Loop over the cells of the mesh
     for cell in range(0, fs.mesh.topology.shape[0]):
-        # Remove this pass statement when you begin coding here
         pass
         # Step 1: Calculate the stiffness matrix on this cell
 
-        # Step 2: Extract the local to global degree of freedom mapping for the
-        # cell
+        # Step 2: Extract the local to global degree of freedom mapping for
+        # the cell
 
         # Step 3: Scatter to the sparse matrix
-        # Hint: K[np.ix_(dofs, dofs)] will select the right elements in K
+        # Hint: A[np.ix_(dofs, dofs)] will select the right elements in A to add into
 
-    return K
+    return A
 
 
-K = assemble_stiffness(fs, cell_stiffness)
+A = assemble_stiffness(fs, cell_stiffness)
 if num_cells == 4:
-    print(K)
-    K_dense = K.todense()
-    assert np.all(np.isclose(K_dense, K_dense.T))
+    print(A)
+    A_dense = A.todense()
+    assert np.all(np.isclose(A_dense, A_dense.T))
 
 # %% [markdown]
 # ## Assembly of $\mathbf{f}$
@@ -287,9 +263,10 @@ if num_cells == 4:
 # We will now assemble the load vector $\mathbf{f}$.
 #
 # If we take $f(x)$ as a general function then we cannot usually symbolically
-# calculate the cell local contribution $\mathbf{f}_{K}$ to the load vector
+# calculate the cell local contribution $\mathbf{f}^{k}$ to the load vector
 # $\mathbf{f}$. A standard approach is to use quadrature, which allows the
-# approximation of an integral on the unit interval
+# approximation of an integral on the unit interval through its weighted point
+# evaluation:
 #
 # $$
 # \int_0^1 g(\hat{x}) \approx \sum_{i = 0}^{n - 1} w_i g(\hat{x}^q_i),
@@ -297,9 +274,8 @@ if num_cells == 4:
 #
 # where the $w_i$ are known as the quadrature weights and the $\hat{x}_i^q$ as
 # quadrature points. We will use a two-point rule $n = 2$ on $[0, 1]$ with
-# points $\hat{x}^q_0 = \frac{1}{2} - \frac{1}{2\sqrt{3}}$ and $\hat{x}^q_1 =
-# \frac{1}{2} + \frac{1}{2\sqrt{3}}$ associated with weights $w_1 = w_2 =
-# \frac{1}{2}$.
+# points $\hat{x}^q = \frac{1}{2} \pm \frac{1}{2\sqrt{3}}$ and weights $w_1 =
+# w_2 = 1/2$.
 #
 # ```{note}
 # In a proper finite element code *both* the element contributions of the
@@ -318,7 +294,7 @@ quadrature_points = np.array(
 quadrature_weights = 0.5 * np.ones(2, dtype=np.float64)
 
 # %% [markdown]
-# ### Exercise 6
+# ### Exercise 5
 #
 # Using the local-to-global approach and a quadrature rule with $n$ points
 # derive the cell local contribution $\mathbf{f}_K$ to the load vector
@@ -331,11 +307,10 @@ quadrature_weights = 0.5 * np.ones(2, dtype=np.float64)
 
 
 # %% [markdown]
-# ### Exercise 7
+# ### Exercise 6
 #
-# Complete the functions `phi_hat` and `cell_load`. The latter returns the load
-# vector for a cell with vertices $a$ and $b$ with $b > a$.
-#
+# Complete the function `cell_load` which returns the load vector for a cell $K_k$
+# with vertices $x_k$ and $x_{k + 1}$ with $b > a$.
 # %%
 def phi_hat(x_hat: float) -> npt.NDArray[np.float64]:
     """
@@ -345,30 +320,28 @@ def phi_hat(x_hat: float) -> npt.NDArray[np.float64]:
         x_hat: Position in local element coordinate system.
 
     Returns:
-        An array containing the evaluation of the local basis functions.
+        An array containing the evaluation of the local basis functions at
+        x_hat.
     """
-    raise NotImplementedError
+    return np.array([1.0 - x_hat, x_hat], np.float64)
 
 
-def cell_load(a: float, b: float) -> npt.NDArray[np.float64]:
-    """Write a documentation string"""
-    f_cell = np.zeros(2, dtype=np.float64)
-
+def cell_load(x_k: float, x_kp1: float) -> npt.NDArray[np.float64]:
+    """Calculate the local load vector for a cell with vertices a and b
+    using a quadrature rule."""
     for point, weight in zip(quadrature_points, quadrature_weights):
-        # Remove this pass when you begin coding your solution
         pass
 
     return f_cell
 
 
 # %% [markdown]
-# So for the second cell we can assemble the local stiffness matrix
-# contribution
+# So for the second cell we can assemble the local load vector contribution
 # %%
 print(cell_load(*mesh.geometry[mesh.topology[1]]))
 
 # %% [markdown]
-# ### Exercise 8
+# ### Exercise 7
 #
 # Complete the function `assemble_load`.
 # %%
@@ -378,15 +351,14 @@ def assemble_load(fs: FunctionSpace, cell_load_fn: Callable) -> npt.NDArray[np.f
     f = np.zeros(fs.size)
 
     # Loop over the cells of the mesh
-    for cell in range(0, mesh.topology.shape[0]):
-        # Remove this pass statement when you begin coding here
+    for cell in range(0, fs.mesh.topology.shape[0]):
         pass
-        # Step 1: Calculate the stiffness matrix on this cell
+        # Step 1: Calculate the load vector on this cell
 
-        # Step 2: Extract the local to global degree of freedom mapping for the
-        # cell
+        # Step 2: Extract the local to global degree of freedom mapping for
+        # the cell
 
-        # Step 3: Scatter to the vector
+        # Step 3: Assemble into the vector
 
     return f
 
@@ -404,63 +376,64 @@ if num_cells == 4:
 # interior degrees of freedom. We can transfer the problem to the space
 # $\mathring{V}_h$ by modifying the linear system in place. For the degrees of
 # freedom associated with vertices on the boundary (here, always $0$ and $N -
-# 1$) we shall modify the stiffness matrix $\mathbf{K}$ by
+# 1$) we shall modify the stiffness matrix $\mathbf{A}$ by
 #
 # 1. placing $0$ on the corresponding rows,
 # 2. placing $0$ on the corresponding columns,
 # 3. inserting $1$ on the corresponding diagonals,
 #
-# For the force vector $\mathbf{f}$ we place $0$ on the corresponding rows.
+# For the force vector $\mathbf{f}$ we place place $0$ on the corresponding
+# rows.
 #
 # %%
 
 
 def apply_boundary_conditions(
-    dofs: npt.NDArray[np.int32], K: scipy.sparse.lil_matrix, f: npt.NDArray[np.float64]
+    dofs: npt.NDArray[np.int32], A: scipy.sparse.lil_matrix, f: npt.NDArray[np.float64]
 ):
-    """Apply boundary conditions on dofs to the linear system (K, f).
+    """Apply boundary conditions on dofs to the linear system (A, f).
 
-    Note: K and f are modified in-place.
+    Note: A and f are modified in-place.
 
     Args:
         dofs: the degrees of freedom to apply boundary conditions to.
-        K: the stiffness matrix.
+        A: the stiffness matrix.
         f: the force vector.
     """
-    num_dofs = K.shape[0]
+    num_dofs = A.shape[0]
 
     for dof in dofs:
         # Zero the row
-        K.rows[dof] = []
-        K.data[dof] = []
+        A.rows[dof] = []
+        A.data[dof] = []
 
         # Loop over all the rows
         for row in range(num_dofs):
             # Does this row have an entry on the column associated with dof?
-            if dof in K.rows[row]:
-                idx = K.rows[row].index(dof)
-                K.rows[row].pop(idx)
-                K.data[row].pop(idx)
+            if dof in A.rows[row]:
+                idx = A.rows[row].index(dof)
+                A.rows[row].pop(idx)
+                A.data[row].pop(idx)
 
-        K[dof, dof] = 1.0
+        A[dof, dof] = 1.0
         f[dof] = 0.0
 
 
 boundary_dofs = np.array([0, mesh.geometry.shape[0] - 1], dtype=np.int32)
-apply_boundary_conditions(boundary_dofs, K, f)
+apply_boundary_conditions(boundary_dofs, A, f)
 
 if num_cells == 4:
-    print(K)
+    print(A)
     print(f)
 
 # %% [markdown]
 # ## Solving
-# We can now solve the system $\mathbf{K} \mathbf{u}_h = \mathbf{f}$ to find
+# We can now solve the system $\mathbf{A} \mathbf{u}_h = \mathbf{f}$ to find
 # the vector of previously unknown coefficients $\mathbf{u}_h$ of the finite
 # element solution $u_h$.
 # %%
-K_csr = K.tocsr()
-u = scipy.sparse.linalg.spsolve(K_csr, f)
+A_csr = A.tocsr()
+u = scipy.sparse.linalg.spsolve(A_csr, f)
 
 plt.plot(mesh.geometry, u, "o-")
 plt.plot(mesh.geometry, np.sin(c * mesh.geometry), "-")
@@ -468,41 +441,120 @@ plt.xlabel(r"$x$")
 plt.ylabel(r"$u$")
 plt.show()
 
+
 # %% [markdown]
 # ## Further exercises
 #
-# ### Exercise 9
+# ### Exercise 8
 #
 # Make a new function `cell_stiffness_quadrature` to compute the stiffness
-# matrix using a quadrature approach. Comment on the necessary order of the
-# quadrature rule to exactly compute the integrand. Pass this up to your
-# assembler and re-run, making sure you get the same result.
+# matrix using a quadrature approach. Pass this up to your assembler and
+# re-run, making sure you get the same result.
 #
 # %%
+def cell_stiffness_quadrature(x_k: float, x_kp1: float) -> npt.NDArray[np.float64]:
+    """Calculate the local stiffness matrix for a cell with vertices a and b
+    using a quadrature rule."""
+    pass
+
+
+A_analytical = assemble_stiffness(fs, cell_stiffness)
+A_quadrature = assemble_stiffness(fs, cell_stiffness_quadrature)
+assert np.all(np.isclose(A_analytical.todense(), A_quadrature.todense()))
+
 
 # %% [markdown]
-# ### Exercise 10
+# ### Exercise 9
 #
 # Write a function `solve` which takes the `num_cells` (number of cells) as an
 # argument. Return the solution from the function. Plot a sequence of solutions
 # on increasingly fine meshes.
 #
 # %%
+def solve(num_cells: int) -> tuple[Mesh, npt.NDArray[np.float64]]:
+    """Solve the Poisson problem on a uniform unit interval mesh.
+
+    Args:
+        num_cells: Number of cells in the mesh.
+
+    Returns:
+        The mesh and the vector of finite element solution coefficients.
+    """
+    pass
+
+for n in [4, 8, 16, 32, 64]:
+    mesh_n, u_n = solve(n)
+    plt.plot(mesh_n.geometry, u_n, "o-", label=f"$N = {n}$")
+
+x_fine = np.linspace(0.0, 1.0, 200)
+plt.plot(x_fine, np.sin(c * x_fine), "k--", label="exact")
+plt.xlabel(r"$x$")
+plt.ylabel(r"$u$")
+plt.legend()
+plt.show()
+
 
 # %% [markdown]
-# ### Exercise 11
+# ### Exercise 10
 #
-# Modify the `solve` function to additionally return the error between the
-# interpolant of the solution and the solution in the natural norm.
+# Write a function `solve_with_error` which takes `num_cells` as an argument
+# and returns the squared $H^1_0$ error between the exact solution $u$ and
+# the finite element solution $u_h$,
 #
 # $$
-# e_h = \lVert I_h u - u_h \rVert^2_{H^1_0} = (\mathbf{u} - \mathbf{u}_h)^T \mathbf{K} (\mathbf{u} - \mathbf{u}_h)
+# e_h = \lVert u - u_h \rVert^2_{H^1_0} = \int_0^1 \left( \frac{\mathrm{d}u(x)}{\mathrm{d}x} - \frac{\mathrm{d}u_h(x)}{\mathrm{d}x}\right)^2 \, \mathrm{d}x.
 # $$
 #
-# where $\mathbf{u}$ is the vector of coefficients of the interpolant of the
-# exact solution $u$.
+# Evaluate the integral cell-by-cell using the same 2-point Gauss rule used to
+# assemble the load vector. On each cell $K_k = [a, b]$ the finite element
+# solution can be expanded in the basis as $u_h(x) = \sum_{i = 0}^{N} u_h^i
+# \phi_i(x)$, so its derivative is
 #
-# On a sequence of refined meshes compute the associated error. Plot the error
-# $e_h$ against $h$ on a log-log plot, and calculate the slope. What do you
-# observe?
+# $$
+# \frac{\mathrm{d}}{\mathrm{d}x} u_h(x) = \sum_{i = 0}^{N} u_h^i \, \frac{\mathrm{d}}{\mathrm{d}x} \phi_i(x)
+# $$
+#
+# which can be transferred to reference cell $\hat{K}$ using the map
+# $F_{k}(\hat{x}) = x = a + h\hat{x}$.
+#
+# On a sequence of increasingly refined meshes (e.g. $N = 16, 32, 64, \ldots$)
+# compute the associated error $e_h$. Algorithmically, calculating $e_h$ is
+# another 'assembly' loop across the cells, the calculation of a local error
+# contribution, and assembly into a single scalar - rather than a matrix
+# ($\mathbf{K}$) or a vector ($\mathbf{f}$).
+
+
+# Plot the error $e_h$ against $h$ on a log-log plot, and calculate the slope
+# (in log-log space). What do you observe? Does this agree with the finite
+# element error estimate you derived in class?
 # %%
+def solve_with_error(
+    num_cells: int,
+) -> float:
+    """Solve the Poisson problem and return the squared H^1_0 error between
+    the exact solution u and the finite element solution u_h, computed by
+    cell-wise quadrature of int (u' - u_h')^2 dx using the reference basis
+    derivatives."""
+    pass
+
+num_cells_list = [16, 32, 64, 128, 256, 512]
+hs = np.array([1.0 / n for n in num_cells_list])
+errors = np.array([solve_with_error(n) for n in num_cells_list])
+
+slope, intercept = np.polyfit(np.log(hs), np.log(errors), 1)
+print(slope)
+print(intercept)
+print(f"Slope of log(e_h) vs log(h): {slope[0]:.3f}")
+
+plt.figure()
+plt.loglog(hs, errors, "o-", label=r"$e_h$")
+plt.loglog(
+    hs,
+    np.exp(intercept + 1.0) * hs**slope,
+    "--",
+    label=f"slope $\\approx$ {slope[0]:.3f}",
+)
+plt.xlabel(r"$h$")
+plt.ylabel(r"$e_h$")
+plt.legend()
+plt.show()
