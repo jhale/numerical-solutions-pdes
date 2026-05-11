@@ -70,6 +70,7 @@ def cell_stiffness(x_k: float, x_kp1: float) -> npt.NDArray[np.float64]:
     """Calculate the local stiffness matrix for a cell with vertices x_k and x_{k + 1}."""
     raise NotImplementedError
 
+
 # %% [markdown]
 #
 # ## Mesh
@@ -138,6 +139,7 @@ def create_unit_interval_mesh(num_cells: int) -> Mesh:
         A 1D uniform mesh on the unit interval.
     """
     raise NotImplementedError
+
 
 num_cells = 4
 c = 3.0 * np.pi  # Can be set to n\pi with n \in \mathbb{N}^{+}
@@ -484,6 +486,7 @@ def solve(num_cells: int) -> tuple[Mesh, npt.NDArray[np.float64]]:
     """
     raise NotImplementedError
 
+
 for n in [4, 8, 16, 32, 64]:
     mesh_n, u_n = solve(n)
     plt.plot(mesh_n.geometry, u_n, "o-", label=f"$N = {n}$")
@@ -538,6 +541,7 @@ def solve_with_error(
     cell-wise quadrature of int (u' - u_h')^2 dx using the reference basis
     derivatives."""
     raise NotImplementedError
+
 
 num_cells_list = [16, 32, 64, 128, 256, 512]
 hs = np.array([1.0 / n for n in num_cells_list])
